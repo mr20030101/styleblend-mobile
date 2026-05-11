@@ -57,7 +57,10 @@ export default function POSScreen({ navigation }) {
     searchTimer.current = setTimeout(async () => {
       setLoadingProds(true);
       try {
-        const r = await getProducts({ search, category_id: catId });
+        const params = {};
+        if (search)  params.search      = search;
+        if (catId)   params.category_id = catId;
+        const r = await getProducts(params);
         setProducts(r.data);
       } catch {}
       setLoadingProds(false);

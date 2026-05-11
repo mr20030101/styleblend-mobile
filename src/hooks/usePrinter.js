@@ -1,5 +1,17 @@
 import { useState, useCallback } from 'react';
-import { Alert, Platform } from 'react-native';
+import { Alert, Platform, PermissionsAndroid } from 'react-native';
+
+async function requestBluetoothPermissions() {
+  if (Platform.OS !== 'android' || Platform.Version < 31) return true;
+  const granted = await PermissionsAndroid.requestMultiple([
+    PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+    PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+  ]);
+  return (
+    granted[PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN]   === PermissionsAndroid.RESULTS.GRANTED &&
+    granted[PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT] === PermissionsAndroid.RESULTS.GRANTED
+  );
+}
 
 // Lazy-import so the module doesn't crash on Expo Go / web
 let BluetoothManager = null;
@@ -27,6 +39,11 @@ export function usePrinter() {
     }
     setScanning(true);
     try {
+      const hasPermission = await requestBluetoothPermissions();
+      if (!hasPermission) {
+        Alert.alert('Permission Required', 'Bluetooth permissions are required to scan for printers. Please allow them in Settings.');
+        return [];
+      }
       await BluetoothManager.enableBluetooth();
       const paired = await BluetoothManager.scanDevices();
       const list = JSON.parse(paired);
