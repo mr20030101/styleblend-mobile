@@ -4,7 +4,8 @@ import {
   KeyboardAvoidingView, Platform, ActivityIndicator, Alert, StatusBar,
 } from 'react-native';
 import { useAuth } from '../context/AuthContext';
-import { C, R, S, serif, label, eyebrow } from '../theme';
+import { C, R, S, label, eyebrow } from '../theme';
+import { SBIcon, Wordmark } from '../components/BrandAssets';
 
 export default function LoginScreen() {
   const { login } = useAuth();
@@ -41,16 +42,14 @@ export default function LoginScreen() {
       <View style={s.inner}>
         {/* Mark */}
         <View style={s.markWrap}>
-          <View style={s.mark}>
-            <Text style={s.markS}>S</Text>
-            <Text style={s.markB}>B</Text>
-          </View>
+          <SBIcon size={60} variant="dark" />
           <View style={s.goldDot} />
         </View>
 
         {/* Brand */}
-        <Text style={s.wordmark}>Style<Text style={s.wordmarkBold}>Blend</Text></Text>
-        <Text style={s.tagline}>Elevate Your Everyday Style</Text>
+        <View style={s.wordmarkWrap}>
+          <Wordmark width={200} variant="light" showTagline />
+        </View>
 
         {/* Card */}
         <View style={s.card}>
@@ -110,16 +109,11 @@ const s = StyleSheet.create({
   inner:         { flex: 1, justifyContent: 'center', paddingHorizontal: 28, paddingBottom: 24 },
 
   // Mark
-  markWrap:      { alignItems: 'center', marginBottom: 20, position: 'relative' },
-  mark:          { width: 60, height: 60, borderRadius: 14, backgroundColor: C.ink, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 1 },
-  markS:         { ...serif(22, '300'), color: C.cream, letterSpacing: 1 },
-  markB:         { ...serif(22, '600'), color: C.cream },
+  markWrap:      { alignItems: 'center', marginBottom: 16, position: 'relative' },
   goldDot:       { position: 'absolute', bottom: -2, right: '44%', width: 6, height: 6, borderRadius: 3, backgroundColor: C.gold },
 
   // Brand
-  wordmark:      { ...serif(28, '300'), color: C.ink, textAlign: 'center', letterSpacing: 1 },
-  wordmarkBold:  { fontWeight: '600' },
-  tagline:       { ...label(9), textAlign: 'center', marginTop: 6, marginBottom: 32 },
+  wordmarkWrap:  { alignItems: 'center', marginBottom: 32 },
 
   // Card
   card:          { backgroundColor: C.white, borderRadius: R.xl, padding: 24, ...S.card },

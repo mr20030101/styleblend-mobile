@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../context/AuthContext';
 import { C, R, serif } from '../theme';
+import { SBIcon } from './BrandAssets';
 import Icon, {
   faCartShopping, faClockRotateLeft,
   faRightFromBracket, faXmark,
@@ -89,10 +90,7 @@ export default function NavDrawer({ visible, onClose }) {
 
             {/* ── Profile ── */}
             <View style={s.profile}>
-              <View style={s.avatar}>
-                <Text style={s.avatarS}>S</Text>
-                <Text style={s.avatarB}>B</Text>
-              </View>
+              <SBIcon size={44} variant="dark" />
               <View style={{ flex: 1 }}>
                 <Text style={s.storeName}>{storeName}</Text>
                 <Text style={s.userName}>{user?.name}</Text>
@@ -148,9 +146,6 @@ const s = StyleSheet.create({
 
   // Profile
   profile:       { flexDirection: 'row', alignItems: 'flex-start', gap: 12, padding: 24, paddingBottom: 20, borderBottomWidth: 0.5, borderBottomColor: 'rgba(245,242,238,0.1)' },
-  avatar:        { width: 44, height: 44, borderRadius: 12, backgroundColor: 'rgba(245,242,238,0.1)', alignItems: 'center', justifyContent: 'center', flexDirection: 'row' },
-  avatarS:       { ...serif(18, '300'), color: C.cream },
-  avatarB:       { ...serif(18, '600'), color: C.cream },
   storeName:     { ...serif(16, '300'), color: C.cream, letterSpacing: 0.5, marginBottom: 2 },
   userName:      { fontSize: 12, color: C.inkFgMuted, marginBottom: 6 },
   roleBadge:     { alignSelf: 'flex-start', backgroundColor: 'rgba(200,169,122,0.2)', borderRadius: R.pill, paddingHorizontal: 8, paddingVertical: 2 },

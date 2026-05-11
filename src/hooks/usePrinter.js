@@ -5,7 +5,7 @@ import { Alert, Platform } from 'react-native';
 let BluetoothManager = null;
 let BluetoothEscposPrinter = null;
 try {
-  const lib = require('react-native-bluetooth-escpos-printer');
+  const lib = require('@vardrz/react-native-bluetooth-escpos-printer');
   BluetoothManager       = lib.BluetoothManager;
   BluetoothEscposPrinter = lib.BluetoothEscposPrinter;
 } catch (_) {}

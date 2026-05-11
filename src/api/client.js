@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const BASE_URL = 'http://167.71.195.53';
+export const BASE_URL = 'https://trackbuddy.duckdns.org';
 
 const client = axios.create({
   baseURL: `${BASE_URL}/api`,
