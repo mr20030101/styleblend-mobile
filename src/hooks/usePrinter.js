@@ -41,21 +41,32 @@ export function usePrinter() {
     try {
       const hasPermission = await requestBluetoothPermissions();
       if (!hasPermission) {
-        Alert.alert('Permission Required', 'Bluetooth permissions are required to scan for printers. Please allow them in Settings.');
+        Alert.alert(
+          'Permission Required',
+          'Please go to Settings → Apps → StyleBlend POS → Permissions and allow Bluetooth.',
+        );
         return [];
       }
-      await BluetoothManager.enableBluetooth();
+
+      // Android 12+ blocks programmatic BT enable — try it but don't crash if it fails
+      try { await BluetoothManager.enableBluetooth(); } catch (_) {}
+
       const paired = await BluetoothManager.scanDevices();
-      const list = JSON.parse(paired);
-      // paired.found contains already-paired devices
-      const found = (list.paired || list.found || []).map(d => ({
+      const list   = typeof paired === 'string' ? JSON.parse(paired) : paired;
+      const found  = (list.paired || list.found || []).map(d => ({
         name:    d.name || 'Unknown Device',
         address: d.address,
       }));
       setDevices(found);
       return found;
     } catch (e) {
-      Alert.alert('Scan Failed', e.message || 'Could not scan for devices.');
+      const isOff = e.message?.includes('NOT_STARTED') || e.message?.includes('disabled');
+      Alert.alert(
+        isOff ? 'Bluetooth is Off' : 'Scan Failed',
+        isOff
+          ? 'Please turn on Bluetooth in your device settings, then scan again.'
+          : e.message || 'Could not scan for devices.',
+      );
       return [];
     } finally {
       setScanning(false);
